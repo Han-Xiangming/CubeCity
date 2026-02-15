@@ -14,6 +14,7 @@ import SelectedIndicator from './components/SelectedIndicator.vue'
 import ToastContainer from './components/ToastContainer.vue'
 import TopBar from './components/TopBar.vue'
 import ModeHUD from './components/ModeHUD.vue' // 引入 HUD
+import AudioManager from './components/AudioManager.vue'
 
 const gameState = useGameState()
 
@@ -42,51 +43,24 @@ function startDayTimer() {
 }
 
 function handleKeydown(e) {
-  // 1. 排除输入框，防止打字时触发
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
 
-  // 2. 映射 1, 2, 3 到对应模式
-  const modeMap = { 
-    '1': 'select', 
-    '2': 'build', 
-    '3': 'relocate' 
-  }
-
-  // 处理 1, 2, 3 键
-  if (modeMap[e.key]) {
+  const modeMap = { '1': 'select', '2': 'build', '3': 'relocate', '4': 'demolish' }
+  
+  if (e.key === '4' && gameState.currentMode === 'demolish') {
+    // 复用 HUD 的切换逻辑，使用国际化
+    gameState.demolishConfirmEnabled = !gameState.demolishConfirmEnabled
+    const msg = gameState.demolishConfirmEnabled ? t('music.safeModeOn') : t('music.quickModeOn')
+    gameState.addToast(msg, gameState.demolishConfirmEnabled ? 'info' : 'warning', 1500)
+  } else if (modeMap[e.key]) {
     gameState.setMode(modeMap[e.key])
-    return
+    // 动态拼接：Select Mode / 选择模式
+    gameState.addToast(`${t(`hud.${modeMap[e.key]}`)}`, 'info', 1000)
   }
 
-  // 3. 核心：处理 4 号键 (拆除模式 + 模式切换)
-  if (e.key === '4') {
-    if (gameState.currentMode === 'demolish') {
-      // 如果当前已经是拆除模式，则切换“确认开关”
-      gameState.demolishConfirmEnabled = !gameState.demolishConfirmEnabled
-      
-      // 发送反馈提示
-      const isSafe = gameState.demolishConfirmEnabled
-      const msg = gameState.language === 'zh'
-        ? (isSafe ? '🛡️ 拆除确认已开启 (安全)' : '💥 快速拆除模式已开启 (快速)')
-        : (isSafe ? '🛡️ Demolish Confirm: ON' : '💥 Quick Demolish: ON')
-      
-      gameState.addToast(msg, isSafe ? 'info' : 'warning', 1500)
-    } else {
-      // 如果当前不是拆除模式，则进入拆除模式
-      gameState.setMode('demolish')
-      const msg = gameState.language === 'zh' ? '进入拆除模式' : 'Demolish Mode'
-      gameState.addToast(msg, 'info', 1000)
-    }
-    return
-  }
-
-  // 4. 其他快捷键保持不变
   if (e.key.toLowerCase() === 'i') {
     gameState.toggleRightSidebar()
-  }
-  
-  if (e.key === 'Escape') {
-    gameState.setShowMapOverview(false)
+    gameState.addToast(gameState.rightSidebarCollapsed ? t('sidebar.hidden') : t('sidebar.visible'), 'info', 1000)
   }
 }
 
@@ -132,6 +106,7 @@ onUnmounted(() => {
       <div class="pointer-events-auto">
         <ModeHUD />
         <RestorePrompt />
+        <AudioManager /> 
       </div>
 
       <div class="pointer-events-auto">

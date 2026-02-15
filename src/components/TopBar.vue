@@ -7,6 +7,7 @@ import AnimatedNumber from './AnimatedNumber.vue'
 import AudioManager from './AudioManager.vue'
 import GuideModal from './GuideModal.vue'
 import ArchivePanel from './ArchivePanel.vue' // 引入之前创建的存档面板组件
+import MusicPanel from './MusicPanel.vue'
 
 const gameState = useGameState()
 const { 
@@ -32,13 +33,19 @@ const handleClickOutside = (e) => {
   }
 }
 
-// --- 音乐相关 ---
-const showVolumeSlider = ref(false)
-function toggleMusic() { gameState.toggleMusic() }
-function handleVolumeChange(event) {
-  const volume = Number.parseFloat(event.target.value)
-  gameState.setMusicVolume(volume)
+
+// 音乐面板状态
+const showMusic = ref(false)
+const musicContainer = ref(null)
+
+// 点击外部关闭
+const closePanels = (e) => {
+  if (musicContainer.value && !musicContainer.value.contains(e.target)) {
+    showMusic.value = false
+  }
 }
+onMounted(() => window.addEventListener('click', closePanels))
+onUnmounted(() => window.removeEventListener('click', closePanels))
 
 // --- 状态警告逻辑 ---
 const populationWarning = computed(() => totalJobs.value > maxPopulation.value)
@@ -139,7 +146,7 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside))
         <!-- 按钮组：4列宽度的网格布局 -->
         <div class="grid grid-cols-4 gap-2 min-w-[180px]">
           
-          <!-- 1. 存档按钮 (带弹出菜单) -->
+          <!-- 1. 存档按钮 -->
           <div class="relative" ref="archiveContainer">
             <button 
               class="w-full px-2 py-1 rounded bg-indigo-600 text-white text-sm font-bold shadow hover:bg-indigo-500 transition active:scale-90"
@@ -155,13 +162,34 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside))
               </div>
             </transition>
           </div>
-
-          <!-- 2. 语言切换 -->
+            <!-- 2.音乐按钮 -->
+          <div class="relative" ref="musicContainer">
+            <button
+              class="w-full px-2 py-1 rounded text-white text-sm font-bold shadow transition flex items-center justify-center gap-1"
+              :class="musicEnabled ? 'bg-sky-600' : 'bg-gray-600'"
+              @click.stop="showMusic = !showMusic"
+            >
+              <span>{{ musicEnabled ? '🔊' : '🔇' }}</span>
+              <!-- 播放时的微小律动 -->
+              <div v-if="musicEnabled" class="flex gap-0.5 items-end h-2.5">
+                 <div class="w-0.5 bg-white/80 animate-pulse h-1"></div>
+                 <div class="w-0.5 bg-white/80 animate-pulse h-2"></div>
+              </div>
+            </button>
+          
+            <!-- 音乐面板弹出层 -->
+            <transition name="fade">
+              <div v-if="showMusic" class="absolute top-full right-0 mt-3 z-[300]">
+                <MusicPanel />
+              </div>
+            </transition>
+          </div>
+          <!-- 3. 语言切换 -->
           <button class="px-2 py-1 rounded bg-gray-700 text-white text-[10px] font-bold hover:bg-gray-600 transition" @click="toggleLang">
             {{ language === 'zh' ? '中' : 'EN' }}
           </button>
 
-          <!-- 3. 拆除安全锁 -->
+          <!-- 4. 拆除安全锁 -->
           <button 
             class="px-2 py-1 rounded text-white text-sm font-bold shadow transition"
             :class="demolishConfirmEnabled ? 'bg-blue-600 hover:bg-blue-500' : 'bg-red-600 hover:bg-red-500 shadow-[0_0_10px_rgba(220,38,38,0.5)]'"
@@ -171,14 +199,14 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside))
             {{ demolishConfirmEnabled ? '🛡️' : '💥' }}
           </button>
 
-          <!-- 4. 指南按钮 -->
+          <!-- 5. 指南按钮 -->
           <button class="px-2 py-1 rounded bg-emerald-600 text-white text-sm font-bold shadow hover:bg-emerald-500 transition" @click="toggleGuide">
             📖
           </button>
 
           <!-- 第二行 -->
           <!-- 5. 音乐控制 -->
-          <div class="relative">
+          <!-- <div class="relative">
             <button
               class="w-full px-2 py-1 rounded text-white text-sm font-bold shadow transition"
               :class="musicEnabled ? 'bg-sky-600 hover:bg-sky-500' : 'bg-gray-600 hover:bg-gray-500'"
@@ -191,7 +219,7 @@ onUnmounted(() => window.removeEventListener('click', handleClickOutside))
             <div v-if="showVolumeSlider" class="absolute bottom-full right-0 p-3 bg-gray-800 rounded-lg border border-gray-600 shadow-2xl z-[300] min-w-max">
               <input type="range" min="0" max="1" step="0.1" :value="musicVolume" class="w-24 h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-industrial-accent" @input="handleVolumeChange">
             </div>
-          </div>
+          </div> -->
 
           <!-- 6. 地图总览 (占3格) -->
           <button

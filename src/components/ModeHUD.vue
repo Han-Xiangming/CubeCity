@@ -46,17 +46,19 @@ function stopDrag() {
   window.removeEventListener('mousemove', onDragging)
 }
 
+// 修改 setMode 中的 Toast 逻辑
 function setMode(id) {
   if (isDragging.value) return
   if (currentMode.value === id && id === 'demolish') {
     gameState.demolishConfirmEnabled = !gameState.demolishConfirmEnabled
-    // const msg = gameState.demolishConfirmEnabled ? '🛡️ Safe Mode' : '💥 Quick Mode'
-    // eventBus.emit('toast:add', { message: msg, type: gameState.demolishConfirmEnabled ? 'info' : 'warning', duration: 1500 })
-    const msg = gameState.language === 'zh'
-      ? (isSafe ? '🛡️ 拆除确认已开启 (安全)' : '💥 快速拆除模式已开启 (快速)')
-      : (isSafe ? '🛡️ Demolish Confirm: ON' : '💥 Quick Demolish: ON')
-    eventBus.emit('toast:add', { message: msg, type: isSafe ? 'info' : 'warning', duration: 500 })
-    // gameState.addToast(msg, isSafe ? 'info' : 'warning', 1500)
+    const isSafe = gameState.demolishConfirmEnabled
+    // 使用 t() 获取国际化文本
+    const msg = isSafe ? t('music.safeModeOn') : t('music.quickModeOn')
+    eventBus.emit('toast:add', { 
+      message: msg, 
+      type: isSafe ? 'info' : 'warning', 
+      duration: 1500 
+    })
   } else { 
     gameState.setMode(id) 
   }

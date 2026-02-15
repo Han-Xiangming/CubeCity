@@ -25,6 +25,16 @@ export const useGameState = defineStore('gameState', {
     musicEnabled: false,
     musicVolume: 0.5,
     isPlayingMusic: false,
+    currentTrackIndex: 0,
+    musicCurrentTime: 0,   // 当前播放秒数
+    musicDuration: 0,      // 总时长秒数
+    musicLoopMode: 'all', // 'all' 代表列表循环, 'one' 代表单曲循环
+    trackList: [
+      { id: 0, title: 'Resonance', artist: 'Home', url: 'audio/Home - Resonance.mp3' },
+      { id: 1, title: 'Voxel Rhythms', artist: 'jazzhams,McCreamy', url: 'audio/jazzhams,McCreamy - Voxel Rhythms.mp3' },
+      { id: 2, title: 'Afternoon Tea', artist: 'MANYO', url: 'audio/MANYO - Afternoon Tea.mp3' },
+      { id: 3, title: 'Urban Sunrise',artist: 'Steve Bass',url: 'audio/Steve Bass - Urban Sunrise.mp3'}
+    ],
     stability: 100,
     stabilityChangeRate: 0,
     demolishConfirmEnabled: true,
@@ -117,7 +127,39 @@ export const useGameState = defineStore('gameState', {
     toggleRightSidebar() {
       this.rightSidebarCollapsed = !this.rightSidebarCollapsed
     },
-        exportSaveData() {
+    enableMusic() {
+      this.musicEnabled = true;
+      this.isPlayingMusic = true;
+    },
+    disableMusic() {
+      this.musicEnabled = false;
+      this.isPlayingMusic = false;
+    },
+    toggleMusic() {
+      this.musicEnabled = !this.musicEnabled;
+    },
+    nextTrack() {
+      this.currentTrackIndex = (this.currentTrackIndex + 1) % this.trackList.length;
+    },
+    playTrack(index) {
+      this.currentTrackIndex = index;
+      this.enableMusic();
+    },
+    setMusicCurrentTime(val) { this.musicCurrentTime = val },
+    setMusicDuration(val) { this.musicDuration = val },
+    // 切换循环模式
+    toggleMusicLoopMode() {
+      this.musicLoopMode = this.musicLoopMode === 'all' ? 'one' : 'all';
+      
+      // 弹出国际化 Toast 提示
+      const isZh = this.language === 'zh';
+      const modeName = this.musicLoopMode === 'all' 
+        ? (isZh ? '列表循环' : 'Loop All') 
+        : (isZh ? '单曲循环' : 'Loop One');
+      
+      this.addToast(modeName, 'info', 1000);
+    },
+    exportSaveData() {
       const saveData = {
         metadata: this.metadata,
         credits: this.credits,
@@ -211,7 +253,10 @@ export const useGameState = defineStore('gameState', {
     saveToLocalSlot(slotId) {
       const data = this.getPackagedData()
       localStorage.setItem(`cubecity_slot_${slotId}`, JSON.stringify(data))
-      this.addToast(`Slot ${slotId} Saved`, 'success', 2000)
+      
+      // 逻辑：直接传入 key，由 Toast 组件渲染或在此处简单判断
+      const msg = this.language === 'zh' ? `已存入档位 ${slotId}` : `Saved to Slot ${slotId}`
+      this.addToast(msg, 'success', 2000)
     },
   
     // 获取槽位快照信息
@@ -301,11 +346,11 @@ export const useGameState = defineStore('gameState', {
       this.demolishConfirmEnabled = true
       this.rightSidebarCollapsed = false
     },
-    toggleMusic() { this.musicEnabled = !this.musicEnabled },
-    enableMusic() { this.musicEnabled = true },
-    disableMusic() { this.musicEnabled = false },
-    setMusicVolume(volume) { this.musicVolume = Math.max(0, Math.min(1, volume)) },
-    setMusicPlaying(playing) { this.isPlayingMusic = playing },
+    // toggleMusic() { this.musicEnabled = !this.musicEnabled },
+    // enableMusic() { this.musicEnabled = true },
+    // disableMusic() { this.musicEnabled = false },
+    // setMusicVolume(volume) { this.musicVolume = Math.max(0, Math.min(1, volume)) },
+    // setMusicPlaying(playing) { this.isPlayingMusic = playing },
   },
   persist: true,
 })

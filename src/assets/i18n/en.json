@@ -116,6 +116,9 @@
     "description": "Previous game save detected. Would you like to continue?",
     "continueButton": "Yes, Continue Last Game",
     "newGameButton": "No, Start New Game",
+    "cityReady": "CITY READY",
+    "clickToEnter": "Click the button below to enter your city",
+    "enterCity": "ENTER CITY",
     "musicHint": "🎵 Click the music button in the top right corner",
     "gpuHint": "⚡ Enable GPU acceleration in chrome://flags for better gaming experience"
   },
@@ -158,5 +161,30 @@
     "lastSaved": "Saved at",
     "importSuccess": "City restored successfully!",
     "importError": "Invalid save file."
+  },
+  "music": {
+    "title": "Sound Center",
+    "nowPlaying": "Now Playing",
+    "playlist": "Playlist",
+    "next": "Next Track",
+    "pause": "Pause",
+    "play": "Play",
+    "loopAll": "Loop All",
+    "loopOne": "Loop One",
+    "modeChanged": "Play Mode: {mode}"
+  },
+    "hud": {
+    "select": "Select Mode",
+    "build": "Build Mode",
+    "relocate": "Relocate Mode",
+    "demolish": "Demolish Mode",
+    "safeSuffix": "(Safe)",
+    "quickSuffix": "(Quick)",
+    "quickModeOn":" Quick removal mode is turned on (please operate carefully)",
+    "safeModeOn": "ˇRemoval confirmation is turned on (safe mode)"
+  },
+  "sidebar": {
+    "hidden": "Sidebar Hidden",
+    "visible": "Sidebar Visible"
   }
 }

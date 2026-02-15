@@ -1,0 +1,12 @@
+{
+  // 解决 "Worker name undefined" 警告（CI 期望的名称是 cubecity）
+  "name": "cubecity",
+  // 解决 "compatibility_date is required" 错误（必填项）
+  "compatibility_date": "2026-02-15",
+  // 配置静态资源目录（CubeCity 作为前端项目，打包后输出目录通常是 dist）
+  "assets": {
+    "directory": "./dist"
+  },
+  // 可选：指定 Node 版本（避免依赖安装兼容问题）
+  "node_compat": true
+}

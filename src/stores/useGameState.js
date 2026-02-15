@@ -28,8 +28,8 @@ export const useGameState = defineStore('gameState', {
     stability: 100,
     stabilityChangeRate: 0,
     demolishConfirmEnabled: true,
-    // --- 新增：右侧边栏折叠状态 ---
     rightSidebarCollapsed: false,
+    saveSlots: [],// 存储存档元数据：[{id, name, date, thumbnail}]
   }),
   getters: {
     dailyIncome: (state) => {

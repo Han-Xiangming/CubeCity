@@ -6,7 +6,7 @@
   // 配置静态资源目录（CubeCity 作为前端项目，打包后输出目录通常是 dist）
   "assets": {
     "directory": "./dist"
-  },
+  }
   // 可选：指定 Node 版本（避免依赖安装兼容问题）
-  "node_compat": true
+//   "node_compat": true
 }

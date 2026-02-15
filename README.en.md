@@ -1,138 +1,109 @@
-[中文版 README](./README.md)
+# 🚀 CubeCity: Modern 3D City-Building Simulation
 
-# CubeCity: 2.5D Cartoon City-Building System
+<a href="https://hellogithub.com/repository/hexianWeb/CubeCity" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=f72043c7eb9145a58e98b5c66eb213cc&claim_uid=hTox9fKc5AdjLus&theme=dark" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-> A lightweight 2.5D city-building simulation game based on Three.js and Vue.
+[中文版 README](./README.md) | [User Guide](./docs/新手指南.md) | [Developer Guide](./docs/新手开发指南.md)
 
-Welcome to CubeCity! This is a cartoon-style 2.5D city simulation game where you can build, manage, and expand your very own metropolis. Place buildings, lay down roads, and watch your city grow as you manage resources and expand your territory.
+**CubeCity** is a lightweight, responsive 3D city-builder simulation game built with **Three.js** and **Vue 3**. Beyond a simple visual demo, it features a complete economic loop, deep interaction logic, and a robust archiving system.
 
 ![Gameplay Demo](README/游玩时动图.gif)
 
-## ✨ Core Features
+---
 
-*   **🏙️ Free Construction:** Place, move, and demolish various buildings and roads as you wish to create a unique cityscape.
-*   **🧩 Strategic Planning:** Balance the development of Residential (R), Commercial (C), and Industrial (I) zones, while also considering Environment (E), Society (S), and Governance (G) for sustainable city growth.
-*   **💰 Economic System:** Buildings automatically generate coins. Use these coins to construct new buildings, upgrade, or expand your territory.
-*   **💾 Local Storage:** Your city progress is automatically saved locally, so you can continue building anytime.
-*   **🎨 Cartoon Style:** Bright colors and cute cartoon models provide a relaxing and enjoyable visual experience.
+## ✨ Core Features (Secondary Dev Edition)
 
-| Interface Overview                             | City Corner                                   | Offline Storage                               |
-| :--------------------------------------------- | :--------------------------------------------- | :------------------------------------------- |
-| ![Interface Overview](README/界面总览.png) | ![A corner of the city](README/随意把玩城市.png) | ![Offline Storage](README/离线存储.png) |
+### 🏗️ Immersive Construction Experience
+*   **Full-Screen Canvas**: A borderless 3D rendering layout with floating UI, supporting WASD panning and QE rotation for a pro-gaming feel.
+*   **Ghost Building Preview**: Real-time holographic previews before placing buildings. Features color-coded feedback (Green for valid, Red for invalid/blocked).
+*   **Tactile Animations (GSAP)**: Dynamic "Bounce-in" effects for construction, "Elastic Pulse" for upgrades, and "Smooth Shrink" for demolition.
 
-## 🎮 Gameplay Overview
+### 🎮 Modern HUD & Hotkeys
+*   **Draggable ModeHUD**: A floating central control panel. Supports double-clicking the Demolish icon to toggle between "Safe Confirm" and "Quick Erase" modes.
+*   **Pro-Level Hotkeys**:
+    *   `1` `2` `3` `4`: Instant mode switching (Select, Build, Relocate, Demolish).
+    *   `W` `A` `S` `D`: Smooth camera panning aligned with view direction.
+    *   `Q` `E` / `ArrowKeys`: Fixed-angle perspective rotation.
+    *   `I`: Toggle/Collapse the right-side building detail panel.
 
-The game revolves around four main operation modes, allowing you to easily manage all aspects of your city:
+### 📊 Strategy & Management
+*   **RCI Economic Balance**: Simulates the interdependent needs of Residential (R), Commercial (C), and Industrial (I) zones.
+*   **ESG Metrics**: Monitor city health via Environment (E), Social (S), and Governance (G) indicators.
+*   **Satellite Mini-Map**: Real-time synchronized map with category color-coding and coordinate tracking.
 
-*   **🔍 Select Mode (SELECT):**
-    *   Click buildings to view details such as population, status, and output.
-    *   Upgrade buildings when conditions are met to enhance their functions and output.
+### 💾 Archive Management System
+*   **Multi-Slot Saving**: Built-in 3 local storage slots with timestamps, city names, and level tracking.
+*   **JSON Portability**: Export your city to a `.json` file to share with friends or import files to migrate your progress.
 
-*   **🏗️ Build Mode (BUILD):**
-    *   Select the building you want from the left panel.
-    *   Click on available land on the map to place buildings. Real-time model preview and highlight make operations intuitive.
+---
 
-*   **🚚 Relocate Mode (RELOCATE):**
-    *   Select a built building, then click on an empty tile to relocate it easily.
-    *   You can rotate the building before placement to fit your city layout.
+## 🎮 How to Play
 
-*   **💣 Demolish Mode (DEMOLISH):**
-    *   Switch to this mode and click unwanted buildings to demolish them.
-    *   Demolishing returns part of the construction cost.
+Manage every detail of your metropolis through four core interaction modes:
+
+*   **🔍 1 - SELECT Mode**: Inspect building details, monitor production efficiency, and handle maintenance.
+*   **🏗️ 2 - BUILD Mode**: Plan your city using **Ghost Previews**. Note: Most buildings must be placed adjacent to roads.
+*   **🚚 3 - RELOCATE Mode**: Move existing structures to empty tiles. Press `R` to rotate the model before placing.
+*   **💥 4 - DEMOLISH Mode**: Clear old zones. Toggle **"Quick Mode"** via the HUD or by pressing `4` again for rapid urban renewal.
+
+---
 
 ## 🛠️ Tech Stack
 
-*   **Core Rendering:** [Three.js](https://threejs.org/)
-*   **Frontend Framework:** [Vue 3](https://vuejs.org/)
-*   **Build Tool:** [Vite](https://vitejs.dev/)
-*   **UI & Styles:** [Tailwind CSS](https://tailwindcss.com/) & SCSS
-*   **State Management:** [Pinia](https://pinia.vuejs.org/)
-*   **Event Bus:** [mitt](https://github.com/developit/mitt)
+| Category | Technology |
+| :--- | :--- |
+| **Engine** | [Three.js](https://threejs.org/) (WebGL) |
+| **Framework** | [Vue 3](https://vuejs.org/) (Composition API) |
+| **State** | [Pinia](https://pinia.vuejs.org/) (with PersistedState) |
+| **Animation** | [GSAP](https://greensock.com/gsap/) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) |
+| **Tooling** | [mitt](https://github.com/developit/mitt), [Vite](https://vitejs.dev/) |
 
-## 📚 Documentation
+---
 
-*   **🎮 Player Guide:** [Game Guide](./docs/新手指南.md) - Detailed gameplay instructions and tips
-*   **👨‍💻 Developer Guide:** [Developer Guide](./docs/新手开发指南.md) - Complete development environment setup and coding standards
-*   **📋 Product Requirements:** [PRD Document](./docs/PRD.md) - Product requirements document
-*   **🔧 Technical Design:** [TD Document](./docs/TD.md) - Technical design document
+## 🔄 Building Status System (Looping mechanism)
 
-## 🚀 Roadmap
+The project includes an intelligent status feedback system displayed via floating icons:
 
-We plan to add more exciting features in the future, including:
+1.  **Debuff Priority**: Critical issues like power outages, disconnected roads, or overpopulation are prioritized in the rotation.
+2.  **Buff Display**: When requirements are met, gain positive indicators for production boosts or available upgrades.
+3.  **Visual Polish**: Smooth fade-in/out transitions ensure the UI doesn't distract from the gameplay.
 
-*   **Dynamic Economic System:** Market demand will change dynamically based on your city's building ratio.
-*   **Challenge & Failure Mechanisms:** Bankruptcy, population loss, environmental collapse, and other failure conditions to increase challenge.
-*   **Strategic Building System:** Buildings will interact with each other, testing your planning skills.
-*   **Dynamic Event System:** Random events like economic crises and immigration waves make city management unpredictable.
-*   **Tech Tree & Policy System:** Unlock new technologies and enact policies to guide city development from a higher level.
+---
 
-## 🧑‍💻 Author
+## 🚀 Quick Start
 
-Developed by [hexianWeb](https://github.com/hexianWeb).
+### Development
+```bash
+# Clone the repository
+git clone https://github.com/hexianWeb/CubeCity.git
 
-## 💖 Support
+# Install dependencies
+npm install
 
-If you find this project helpful, consider buying me a coffee to support long-term maintenance and updates:
-
-![Sponsor QR](README/coffe.jpg)
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## New Feature: Building Status Cycling System 🔄
-
-### Features
-
-1. **Smart Status Display**
-   - **Debuff Priority:** When a building has problem statuses, all debuffs are cycled first.
-   - **Buff Fallback:** When there are no problems, all buffs are cycled.
-   - **Smooth Transitions:** Statuses fade in and out for a smooth visual experience.
-
-2. **Cycling Mechanism**
-   - Automatically switches to the next status every 2.5 seconds
-   - Static display for single status, auto-cycling for multiple statuses
-   - Supports real-time status changes
-
-3. **Status Categories**
-   ```javascript
-   DEBUFF: ['MISSING_ROAD', 'MISSING_POWER', 'MISSING_POPULATION', 'OVER_POPULATION', 'MISSING_POLLUTION']
-   BUFF: ['POWER_BOOST', 'ECONOMY_BOOST', 'POPULATION_BOOST', 'COIN_BUFF', 'HUMAN_BUFF', 'UPGRADE']
-   ```
-
-### Usage Example
-
-Configure statuses in building classes:
-
-```javascript
-this.statusConfig = [
-  // === DEBUFF status (problem, cycled first) ===
-  {
-    statusType: 'MISSING_ROAD',
-    condition: (building, gs) => {
-      building.buffConfig = { targets: ['road'] }
-      return !building.checkForBuffTargets(gs)
-    },
-    effect: { type: 'missRoad', offsetY: 0.7 },
-  },
-
-  // === BUFF status (bonus, cycled when no problems) ===
-  {
-    statusType: 'COIN_BUFF',
-    condition: (building, gs) => {
-      building.buffConfig = { targets: ['shop'], range: 1 }
-      return building.checkForBuffTargets(gs)
-    },
-    effect: { type: 'coinBuff', offsetY: 0.7 },
-  },
-]
+# Start development server
+npm run dev
 ```
 
-### Technical Implementation
+### Production Build
+```bash
+npm run build
+```
 
-- **Status Management:** Switch from single to array-based status management
-- **Interval Cycling:** Use `setInterval` for automatic switching
-- **Animation Optimization:** Dedicated `fadeOut` method for smooth transitions
-- **Memory Safety:** Complete cleanup to prevent memory leaks
+---
 
-Reference: `src/js/components/tiles/buildings/park.js`
+## 🧑‍💻 Author & License
+
+*   **Author**: [hexianWeb](https://github.com/hexianWeb)
+*   **License**: [MIT License](LICENSE)
+*   **Contributors**: Special thanks to everyone who participated in the secondary development and UX optimization.
+
+---
+
+## 💖 Support the Project
+
+If this project helped you learn Three.js or Vue 3, please consider giving it a **Star** 🌟 or buying the author a coffee:
+
+![Donation QR](README/coffe.jpg)
+
+---
+*CubeCity - Bringing life to your voxel metropolis.*

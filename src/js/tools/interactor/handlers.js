@@ -69,6 +69,7 @@ export function handleBuildMode(ctx, tile) {
   tile.setType('ground')
   updateAdjacentRoads(tile, ctx.experience.world.city)
   showBuildingPlacedToast(buildingTypeToBuild, tile, buildingLevelToBuild, ctx.gameState)
+  ctx.experience.world.ghost?.hide()
 }
 
 /**

@@ -18,7 +18,7 @@ function removeToast(id) {
   gameState.removeToast(id)
 }
 eventBus.on('toast:add', ({ message, type }) => {
-  gameState.addToast(message, type)
+  gameState.addToast(message, type,500)
 })
 </script>
 

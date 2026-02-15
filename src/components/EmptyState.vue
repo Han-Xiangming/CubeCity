@@ -1,12 +1,10 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-// 只定义 props，不赋值变量
 
 const _props = defineProps({
   currentMode: { type: String, required: true },
 })
 
-// 使用 i18n 进行国际化
 const { t } = useI18n()
 </script>
 
@@ -14,8 +12,9 @@ const { t } = useI18n()
   <div class="relative h-full flex items-center justify-center p-6">
     <transition name="fade-slide" mode="out-in">
       <div :key="currentMode" class="text-center max-w-md">
+        
+        <!-- ================= 选择模式 ================= -->
         <template v-if="currentMode === 'select'">
-          <!-- 选择模式内容 -->
           <div class="relative mb-6">
             <div class="text-8xl mb-4 transform hover:scale-110 transition-transform duration-300">
               <div class="inline-block p-4 py-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg">
@@ -39,8 +38,9 @@ const { t } = useI18n()
             </div>
           </div>
         </template>
+
+        <!-- ================= 建造模式 ================= -->
         <template v-else-if="currentMode === 'build'">
-          <!-- 建造模式内容 -->
           <div class="relative mb-6">
             <div class="text-8xl mb-4 transform hover:scale-110 transition-transform duration-300">
               <div class="inline-block p-4 py-6 bg-gradient-to-br from-green-500 to-green-700 rounded-2xl shadow-lg">
@@ -73,14 +73,11 @@ const { t } = useI18n()
                 </div>
               </div>
             </div>
-            <!-- 新增贴士 提醒用户可通过左右方向键调整东南西北方向 -->
-            <div class="bg-slate-800/50 backdrop-blur-sm rounded-lg p-3 border border-slate-700">
-              <p class="text-slate-300 text-sm" v-html="t('emptyState.buildMode.cameraTip')" />
-            </div>
           </div>
         </template>
+
+        <!-- ================= 搬迁模式 ================= -->
         <template v-else-if="currentMode === 'relocate'">
-          <!-- 搬迁模式内容 -->
           <div class="relative mb-6">
             <div class="text-8xl mb-4 transform hover:scale-110 transition-transform duration-300">
               <div class="inline-block p-4 py-6 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl shadow-lg">
@@ -94,31 +91,54 @@ const { t } = useI18n()
           </h3>
           <div class="space-y-4">
             <div class="space-y-3">
+              <!-- 旋转提示 -->
               <div class="bg-slate-800/50 backdrop-blur-sm rounded-lg p-3 border border-slate-700">
                 <div class="flex items-center space-x-2 text-sm text-slate-200">
                   <kbd class="px-2 py-1 bg-slate-700 rounded text-xs font-mono">R</kbd>
                   <span>{{ t('emptyState.relocateMode.rotateHint') }}</span>
                 </div>
               </div>
+              <!-- 搬迁点击提示 (Fix: 使用 i18n-t) -->
               <div class="bg-slate-800/50 backdrop-blur-sm rounded-lg p-3 border border-slate-700">
-                <p class="text-slate-300 text-sm" v-html="t('emptyState.relocateMode.relocateHint')" />
+                <i18n-t keypath="emptyState.relocateMode.relocateHint" tag="p" class="text-slate-300 text-sm">
+                  <template #tileA>
+                    <span class="px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold mx-1">A</span>
+                  </template>
+                  <template #tileB>
+                    <span class="px-1.5 py-0.5 bg-green-500 text-white rounded text-xs font-bold mx-1">B</span>
+                  </template>
+                </i18n-t>
               </div>
             </div>
+
+            <!-- 要求与取消提示 (Fix: 使用 i18n-t) -->
             <div class="bg-red-500/20 backdrop-blur-sm rounded-lg p-3 border border-red-500/30">
               <div class="flex items-start space-x-2">
                 <svg class="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                 </svg>
-                <div class="text-left">
-                  <p class="text-red-200 text-xs" v-html="t('emptyState.relocateMode.requirementsText')" />
-                  <p class="text-red-300 text-xs mt-2" v-html="t('emptyState.relocateMode.cancelHint')" />
+                <div class="text-left space-y-2">
+                  <i18n-t keypath="emptyState.relocateMode.requirementsText" tag="p" class="text-red-200 text-xs">
+                    <template #a>
+                      <span class="font-bold">A</span>
+                    </template>
+                    <template #b>
+                      <span class="font-bold">B</span>
+                    </template>
+                  </i18n-t>
+                  <i18n-t keypath="emptyState.relocateMode.cancelHint" tag="p" class="text-red-300 text-xs mt-2">
+                    <template #key>
+                      <kbd class="px-1 py-0.5 bg-red-700 rounded text-xs">ESC</kbd>
+                    </template>
+                  </i18n-t>
                 </div>
               </div>
             </div>
           </div>
         </template>
+
+        <!-- ================= 拆除模式 ================= -->
         <template v-else-if="currentMode === 'demolish'">
-          <!-- 拆除模式内容 -->
           <div class="relative mb-6">
             <div class="text-8xl mb-4 transform hover:scale-110 transition-transform duration-300">
               <div class="inline-block p-4 py-6 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg">

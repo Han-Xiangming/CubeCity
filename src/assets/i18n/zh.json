@@ -123,15 +123,14 @@
       "title": "建造模式",
       "description": "从侧边栏选择建筑类型，然后点击任意空地块进行建造",
       "strategicTip": "战略提示",
-      "strategicTipText": "电力供应、环境因素和居民满意度直接影响人口增长和金币产出",
-      "cameraTip": "按 <kbd class=\"px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold\">←</kbd> 或 <kbd class=\"px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold\">→</kbd> 键调整相机方向"
+      "strategicTipText": "电力供应、环境因素和居民满意度直接影响人口增长和金币产出"
     },
     "relocateMode": {
       "title": "搬迁模式",
       "rotateHint": "旋转选中的建筑",
-      "relocateHint": "先点击地块 <span class=\"px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold\">A</span> 再点击地块 <span class=\"px-1.5 py-0.5 bg-green-500 text-white rounded text-xs font-bold\">B</span> 来搬迁建筑",
-      "requirementsText": "地块 <span class=\"font-bold\">A</span> 必须有建筑<br>地块 <span class=\"font-bold\">B</span> 必须为空",
-      "cancelHint": "按 <kbd class=\"px-1 py-0.5 bg-red-700 rounded text-xs\">ESC</kbd> 取消"
+      "relocateHint": "先点击地块 {tileA} 再点击地块 {tileB} 来搬迁建筑",
+      "requirementsText": "地块 {a} 必须有建筑 | 地块 {b} 必须为空",
+      "cancelHint": "按 {key} 取消"
     },
     "demolishMode": {
       "title": "拆除模式",
@@ -140,22 +139,18 @@
       "recoveryText": "70%的建筑材料将退回到您的库存中"
     }
   },
-  "saveManager": {
-    "title": "存档管理器",
-    "placeholder": "输入存档名称...",
-    "newSave": "新建存档",
-    "load": "加载",
-    "delete": "删除",
-    "empty": "未发现本地存档",
-    "export": "导出 JSON",
-    "import": "导入文件",
-    "slotDefaultName": "城市快照",
-    "toast": {
-      "saveSuccess": "存档已成功保存",
-      "loadSuccess": "正在读取存档，请稍候...",
-      "importSuccess": "城市数据导入成功",
-      "importError": "无效的存档文件",
-      "deleteSuccess": "存档已删除"
-    }
+  "archive": {
+    "title": "城市档案管理",
+    "slot": "档位",
+    "empty": "空白存档",
+    "saveBtn": "存入",
+    "loadBtn": "读取",
+    "exportFile": "导出文件",
+    "importFile": "导入文件",
+    "confirmLoad": "读取存档将覆盖当前城市进度，确定吗？",
+    "confirmSave": "确定要覆盖此档位的旧数据吗？",
+    "lastSaved": "保存时间",
+    "importSuccess": "城市档案导入成功！",
+    "importError": "存档文件校验失败。"
   }
 }

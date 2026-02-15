@@ -1,13 +1,12 @@
 import EventEmitter from './event-emitter.js'
 
 export default class Sizes extends EventEmitter {
-  constructor(element) {
+  constructor() {
     super()
-    // 设置目标元素，默认为 window
-    this.element = element || window
+
+    // 核心更改：全屏模式直接使用 window 的宽高
     this.updateSizes()
 
-    // 监听全局窗口缩放
     window.addEventListener('resize', () => {
       this.updateSizes()
       this.trigger('resize')
@@ -15,15 +14,8 @@ export default class Sizes extends EventEmitter {
   }
 
   updateSizes() {
-    if (this.element === window) {
-      this.width = window.innerWidth
-      this.height = window.innerHeight
-    } else {
-      // 关键：获取父容器（main 标签）的实时物理尺寸
-      this.width = this.element.offsetWidth
-      this.height = this.element.offsetHeight
-    }
-
+    this.width = window.innerWidth
+    this.height = window.innerHeight
     this.aspect = this.width / this.height
     this.pixelRatio = Math.min(window.devicePixelRatio, 2)
   }

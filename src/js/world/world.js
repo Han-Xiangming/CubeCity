@@ -3,6 +3,7 @@ import Experience from '../experience.js'
 import Interactor from '../tools/interactor.js'
 import Environment from './environment.js'
 import SceneMetadata from './scene-metadata.js'
+import Ghost from './ghost.js'
 
 export default class World {
   constructor() {
@@ -18,7 +19,8 @@ export default class World {
       this.environment = new Environment()
       // 实例化城市地皮
       this.city = new City()
-
+      // 初始化虚影
+      this.ghost = new Ghost()
       // 交互系统
       this.interactor = new Interactor(this.city.root)
     })
@@ -31,6 +33,9 @@ export default class World {
     }
     if (this.interactor && this.interactor.update) {
       this.interactor.update()
+    }
+    if (this.ghost && this.ghost.updateVisual) {
+      this.ghost.updateVisual()
     }
   }
 }

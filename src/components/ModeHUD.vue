@@ -55,7 +55,7 @@ function setMode(id) {
     const msg = gameState.language === 'zh'
       ? (isSafe ? '🛡️ 拆除确认已开启 (安全)' : '💥 快速拆除模式已开启 (快速)')
       : (isSafe ? '🛡️ Demolish Confirm: ON' : '💥 Quick Demolish: ON')
-    eventBus.emit('toast:add', { message: msg, type: isSafe ? 'info' : 'warning', duration: 1500 })
+    eventBus.emit('toast:add', { message: msg, type: isSafe ? 'info' : 'warning', duration: 500 })
     // gameState.addToast(msg, isSafe ? 'info' : 'warning', 1500)
   } else { 
     gameState.setMode(id) 

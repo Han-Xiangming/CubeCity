@@ -117,6 +117,49 @@ export const useGameState = defineStore('gameState', {
     toggleRightSidebar() {
       this.rightSidebarCollapsed = !this.rightSidebarCollapsed
     },
+        exportSaveData() {
+      const saveData = {
+        metadata: this.metadata,
+        credits: this.credits,
+        gameDay: this.gameDay,
+        cityName: this.cityName,
+        cityLevel: this.cityLevel,
+        stability: this.stability,
+        demolishConfirmEnabled: this.demolishConfirmEnabled,
+        rightSidebarCollapsed: this.rightSidebarCollapsed
+      }
+      
+      const blob = new Blob([JSON.stringify(saveData)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `CubeCity_${this.cityName}_Day${this.gameDay}.json`
+      link.click()
+      URL.revokeObjectURL(url)
+    },
+
+    // --- 新增：导入存档 ---
+    importSaveData(jsonData) {
+      try {
+        const data = JSON.parse(jsonData)
+        // 简单验证数据有效性
+        if (!data.metadata || !Array.isArray(data.metadata)) throw new Error()
+        
+        // 批量赋值
+        this.metadata = data.metadata
+        this.credits = data.credits || 3000
+        this.gameDay = data.gameDay || 1
+        this.cityName = data.cityName || 'HeXian City'
+        this.cityLevel = data.cityLevel || 1
+        this.stability = data.stability || 100
+        this.demolishConfirmEnabled = data.demolishConfirmEnabled ?? true
+        this.rightSidebarCollapsed = data.rightSidebarCollapsed ?? false
+        
+        return true
+      } catch (e) {
+        return false
+      }
+    },
     updateStability() {
       let changeRate = STABILITY_CONFIG.DEFAULT_STABILITY_CHANGE_RATE
       const servicesCount = this.hospitalCount + this.policeStationCount + this.fireStationCount
@@ -151,46 +194,58 @@ export const useGameState = defineStore('gameState', {
         this.selectedPosition = null
       }
     },
-    getSnapshot() {
+    getPackagedData() {
       return {
-        metadata: JSON.parse(JSON.stringify(this.metadata)),
+        metadata: this.metadata,
         credits: this.credits,
         gameDay: this.gameDay,
         cityName: this.cityName,
         cityLevel: this.cityLevel,
-        citySize: this.citySize,
         stability: this.stability,
-      };
-    },
-    saveToNewSlot(customName, defaultNameLabel) {
-      const id = Date.now();
-      const saveEntry = {
-        id,
-        name: customName || `${defaultNameLabel} ${this.saveSlots.length + 1}`,
-        date: new Date().toLocaleString(),
-        data: this.getSnapshot()
-      };
-      this.saveSlots.push(saveEntry);
-    },
-    loadFromSlot(slotId) {
-      const slot = this.saveSlots.find(s => s.id === slotId);
-      if (slot) {
-        Object.assign(this, slot.data);
-        return true;
+        demolishConfirmEnabled: this.demolishConfirmEnabled,
+        timestamp: new Date().toLocaleString()
       }
-      return false;
     },
-    exportSaveJSON() {
-      const blob = new Blob([JSON.stringify({ city: this.getSnapshot() })], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `CubeCity_Save_${Date.now()}.json`;
-      a.click();
+  
+    // 保存到本地浏览器槽位 (1, 2, 3)
+    saveToLocalSlot(slotId) {
+      const data = this.getPackagedData()
+      localStorage.setItem(`cubecity_slot_${slotId}`, JSON.stringify(data))
+      this.addToast(`Slot ${slotId} Saved`, 'success', 2000)
     },
-    deleteSlot(slotId) {
-      this.saveSlots = this.saveSlots.filter(s => s.id !== slotId);
-    },    
+  
+    // 获取槽位快照信息
+    getSlotInfo(slotId) {
+      const raw = localStorage.getItem(`cubecity_slot_${slotId}`)
+      return raw ? JSON.parse(raw) : null
+    },
+
+    // 导出为文件
+    exportSaveFile() {
+      const data = this.getPackagedData()
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `CC_${this.cityName}_D${this.gameDay}.json`
+      link.click()
+      URL.revokeObjectURL(url)
+    },
+
+    // 通用导入逻辑 (处理 JSON 字符串)
+    applySaveData(jsonData) {
+      try {
+        const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData
+        if (!data.metadata) return false
+
+        // 批量更新状态 (Pinia 会自动持久化到当前的 auto-save)
+        Object.assign(this.$state, data)
+        return true
+      } catch (e) {
+        console.error('Import failed:', e)
+        return false
+      }
+    },   
     setCredits(credits) { this.credits = credits },
     updateCredits(credits) { this.credits += credits },
     setTerritory(territory) { this.territory = territory },

@@ -129,15 +129,14 @@
       "title": "Build Mode",
       "description": "Select a building type from the sidebar, then click on any empty tile to construct it",
       "strategicTip": "Strategic Tip",
-      "strategicTipText": "Power supply, environmental factors, and resident satisfaction directly impact population growth and coin production",
-      "cameraTip": "Press <kbd class=\"px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold\">←</kbd> or <kbd class=\"px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold\">→</kbd> to adjust the direction of the camera"
+      "strategicTipText": "Power supply, environmental factors, and resident satisfaction directly impact population growth and coin production"
     },
     "relocateMode": {
       "title": "Relocation Mode",
       "rotateHint": "Rotate selected building",
-      "relocateHint": "Click tile <span class=\"px-1.5 py-0.5 bg-blue-500 text-white rounded text-xs font-bold\">A</span> then tile <span class=\"px-1.5 py-0.5 bg-green-500 text-white rounded text-xs font-bold\">B</span> to relocate building",
-      "requirementsText": "Tile <span class=\"font-bold\">A</span> must have a building<br>Tile <span class=\"font-bold\">B</span> must be empty",
-      "cancelHint": "Press <kbd class=\"px-1 py-0.5 bg-red-700 rounded text-xs\">ESC</kbd> to cancel"
+      "relocateHint": "Click tile {tileA} then tile {tileB} to relocate building",
+      "requirementsText": "Tile {a} must have a building | Tile {b} must be empty",
+      "cancelHint": "Press {key} to cancel"
     },
     "demolishMode": {
       "title": "Demolition Mode",
@@ -146,22 +145,18 @@
       "recoveryText": "70% of construction materials will be refunded to your inventory"
     }
   },
-  "saveManager": {
-    "title": "Archive Manager",
-    "placeholder": "Enter save name...",
-    "newSave": "NEW SAVE",
-    "load": "LOAD",
-    "delete": "DEL",
-    "empty": "No local archives found",
-    "export": "Export JSON",
-    "import": "Import File",
-    "slotDefaultName": "City Snapshot",
-    "toast": {
-      "saveSuccess": "Game saved successfully",
-      "loadSuccess": "Loading archive, please wait...",
-      "importSuccess": "City imported successfully",
-      "importError": "Invalid archive file",
-      "deleteSuccess": "Archive deleted"
-    }
-}
+  "archive": {
+    "title": "Archive Management",
+    "slot": "Slot",
+    "empty": "Empty Slot",
+    "saveBtn": "Save",
+    "loadBtn": "Load",
+    "exportFile": "Export JSON",
+    "importFile": "Import JSON",
+    "confirmLoad": "Overwrite current city with this save?",
+    "confirmSave": "Overwrite this slot?",
+    "lastSaved": "Saved at",
+    "importSuccess": "City restored successfully!",
+    "importError": "Invalid save file."
+  }
 }

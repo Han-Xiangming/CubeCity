@@ -30,7 +30,7 @@ function selectBuilding({ type, name, level = 1 }) {
   if (selectedBuilding.value?.type === type && selectedBuilding.value?.level === level)
     return
   gameState.setSelectedBuilding({ type, level })
-  gameState.addToast(`${t('selectedIndicator.selected')}: ${name[language.value]}`, 'info')
+  gameState.addToast(`${t('selectedIndicator.selected')}: ${name[language.value]}`, 'info',500)
 }
 function setMode(mode) {
   if (currentMode.value === mode)

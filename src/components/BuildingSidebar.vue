@@ -36,16 +36,24 @@ function setMode(mode) {
   if (currentMode.value === mode)
     return
   gameState.setMode(mode)
-  gameState.setSelectedBuilding(null)
-  gameState.addToast(`MODE : ${mode.toUpperCase()} CHANGE`, 'info')
+  // const modeNames = { 
+  //     zh: { select: '选择', build: '建造', relocate: '搬迁', demolish: '拆除' }, 
+  //     en: { select: 'Select', build: 'Build', relocate: 'Move', demolish: 'Demolish' } 
+  // }
+  // const lang = gameState.language === 'zh' ? 'zh' : 'en'
+    
+  // // 发送 Toast 提示，显示时间短一点（1秒）
+  // // gameState.addToast(`${modeNames[lang][targetMode]} Mode`, 'info', 1000)
+  // gameState.setSelectedBuilding(null)
+  // gameState.addToast(`MODE : ${modeNames[lang][targetMode]} CHANGE`, 'info')
 }
 
 // 键盘快捷键映射
 const modeKeyMap = {
-  d: 'demolish',
-  r: 'relocate',
-  b: 'build',
-  s: 'select',
+  4: 'demolish',
+  3: 'relocate',
+  2: 'build',
+  1: 'select',
 }
 
 function handleKeydown(e) {

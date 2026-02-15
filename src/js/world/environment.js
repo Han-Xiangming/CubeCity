@@ -71,7 +71,7 @@ export default class Environment {
 
     // 添加辅助显示器(默认隐藏)
     this.hemisphereLightHelper = new THREE.HemisphereLightHelper(this.hemisphereLight, 5)
-    this.hemisphereLightHelper.visible = true
+    this.hemisphereLightHelper.visible = false
     this.scene.add(this.hemisphereLightHelper)
   }
 

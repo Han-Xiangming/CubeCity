@@ -27,8 +27,9 @@ export const useGameState = defineStore('gameState', {
     isPlayingMusic: false,
     stability: 100,
     stabilityChangeRate: 0,
-    // 全局拆除确认开关
     demolishConfirmEnabled: true,
+    // --- 新增：右侧边栏折叠状态 ---
+    rightSidebarCollapsed: false,
   }),
   getters: {
     dailyIncome: (state) => {
@@ -112,6 +113,10 @@ export const useGameState = defineStore('gameState', {
     fireStationCount: state => state.metadata.flat().filter(tile => tile.building === 'fire_station').length,
   },
   actions: {
+    // --- 新增：切换侧边栏方法 ---
+    toggleRightSidebar() {
+      this.rightSidebarCollapsed = !this.rightSidebarCollapsed
+    },
     updateStability() {
       let changeRate = STABILITY_CONFIG.DEFAULT_STABILITY_CHANGE_RATE
       const servicesCount = this.hospitalCount + this.policeStationCount + this.fireStationCount
@@ -141,10 +146,7 @@ export const useGameState = defineStore('gameState', {
     setSelectedBuilding(payload) { this.selectedBuilding = payload },
     setSelectedPosition(position) { 
       if (position && position.x !== undefined && position.y !== undefined) {
-        this.selectedPosition = { 
-          x: Math.floor(Number(position.x)), 
-          y: Math.floor(Number(position.y)) 
-        }
+        this.selectedPosition = { x: Math.floor(Number(position.x)), y: Math.floor(Number(position.y)) }
       } else {
         this.selectedPosition = null
       }
@@ -155,38 +157,22 @@ export const useGameState = defineStore('gameState', {
     setCityLevel(cityLevel) { this.cityLevel = cityLevel },
     setCityName(cityName) { this.cityName = cityName },
     setCitySize(citySize) { this.citySize = citySize },
-    
-    // --- 修改后的 addToast：增加自动消失和时长控制 ---
     addToast(message, type = 'info', duration = 3000) {
       const id = Date.now() + Math.random()
       this.toastQueue.push({ message, type, id })
-      
-      // 限制队列长度，防止堆叠（可选，建议保留）
-      if (this.toastQueue.length > 5) {
-        this.toastQueue.shift()
-      }
-
-      // 设置定时器自动移除
-      setTimeout(() => {
-        this.removeToast(id)
-      }, duration)
+      setTimeout(() => { this.removeToast(id) }, duration)
     },
-
     setLanguage(lang) { this.language = lang },
     removeToast(id) { this.toastQueue = this.toastQueue.filter(t => t.id !== id) },
     clearSelection() { this.selectedBuilding = null; this.selectedPosition = null },
     updateTile(x, y, patch) {
       if (this.metadata[x] && this.metadata[x][y]) {
         Object.assign(this.metadata[x][y], patch)
-      } else {
-        console.error(`[CubeCity] updateTile 失败: 坐标 [${x}, ${y}] 无效`, patch)
       }
     },
     setTile(x, y, patch) {
       if (this.metadata[x] && this.metadata[x][y]) {
         Object.assign(this.metadata[x][y], patch)
-      } else {
-        console.error(`[CubeCity] setTile 失败: 坐标 [${x}, ${y}] 无效`, patch)
       }
     },
     getTile(x, y) { return this.metadata?.[x]?.[y] || null },
@@ -199,11 +185,7 @@ export const useGameState = defineStore('gameState', {
     },
     resetAll() {
       this.metadata = Array.from({ length: 17 }, _ =>
-        Array.from({ length: 17 }, _ => ({
-          type: 'grass',
-          building: null,
-          direction: 0,
-        })))
+        Array.from({ length: 17 }, _ => ({ type: 'grass', building: null, direction: 0 })))
       this.currentMode = 'build'
       this.selectedBuilding = null
       this.selectedPosition = null
@@ -222,23 +204,13 @@ export const useGameState = defineStore('gameState', {
       this.musicVolume = 0.5
       this.isPlayingMusic = false
       this.demolishConfirmEnabled = true
+      this.rightSidebarCollapsed = false
     },
-    
-    toggleMusic() {
-      this.musicEnabled = !this.musicEnabled
-    },
-    enableMusic() {
-      this.musicEnabled = true
-    },
-    disableMusic() {
-      this.musicEnabled = false
-    },
-    setMusicVolume(volume) {
-      this.musicVolume = Math.max(0, Math.min(1, volume))
-    },
-    setMusicPlaying(playing) {
-      this.isPlayingMusic = playing
-    },
+    toggleMusic() { this.musicEnabled = !this.musicEnabled },
+    enableMusic() { this.musicEnabled = true },
+    disableMusic() { this.musicEnabled = false },
+    setMusicVolume(volume) { this.musicVolume = Math.max(0, Math.min(1, volume)) },
+    setMusicPlaying(playing) { this.isPlayingMusic = playing },
   },
   persist: true,
 })

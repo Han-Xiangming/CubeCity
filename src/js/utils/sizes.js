@@ -1,35 +1,25 @@
 import EventEmitter from './event-emitter.js'
 
 export default class Sizes extends EventEmitter {
-  /**
-   * 初始化尺寸管理器
-   * @param {HTMLElement} [element] - 可选的DOM元素,用于获取宽高
-   */
   constructor(element) {
     super()
-
-    // 设置目标元素
+    // 设置目标元素，默认为 window
     this.element = element || window
-
-    // 初始化尺寸
     this.updateSizes()
 
-    // 监听resize事件
+    // 监听全局窗口缩放
     window.addEventListener('resize', () => {
       this.updateSizes()
       this.trigger('resize')
     })
   }
 
-  /**
-   * 更新尺寸属性
-   */
   updateSizes() {
     if (this.element === window) {
       this.width = window.innerWidth
       this.height = window.innerHeight
-    }
-    else {
+    } else {
+      // 关键：获取父容器（main 标签）的实时物理尺寸
       this.width = this.element.offsetWidth
       this.height = this.element.offsetHeight
     }

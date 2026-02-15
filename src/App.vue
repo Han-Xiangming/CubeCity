@@ -41,32 +41,52 @@ function startDayTimer() {
   }, 5000)
 }
 
-// 键盘事件处理：ESC 关闭地图 + 全局快捷键切换模式
 function handleKeydown(e) {
-  // ESC 处理
-  if (gameState.showMapOverview && (e.key === 'Escape' || e.key === 'Esc')) {
-    gameState.setShowMapOverview(false)
+  // 1. 排除输入框，防止打字时触发
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+
+  // 2. 映射 1, 2, 3 到对应模式
+  const modeMap = { 
+    '1': 'select', 
+    '2': 'build', 
+    '3': 'relocate' 
+  }
+
+  // 处理 1, 2, 3 键
+  if (modeMap[e.key]) {
+    gameState.setMode(modeMap[e.key])
     return
   }
 
-  // 防止在输入框内触发快捷键
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-
-  // 模式快捷键映射
-  const keyMap = {
-    '1': 'select', 'q': 'select',
-    '2': 'build',  'w': 'build',
-    '3': 'relocate','e': 'relocate',
-    '4': 'demolish','r': 'demolish'
+  // 3. 核心：处理 4 号键 (拆除模式 + 模式切换)
+  if (e.key === '4') {
+    if (gameState.currentMode === 'demolish') {
+      // 如果当前已经是拆除模式，则切换“确认开关”
+      gameState.demolishConfirmEnabled = !gameState.demolishConfirmEnabled
+      
+      // 发送反馈提示
+      const isSafe = gameState.demolishConfirmEnabled
+      const msg = gameState.language === 'zh'
+        ? (isSafe ? '🛡️ 拆除确认已开启 (安全)' : '💥 快速拆除模式已开启 (快速)')
+        : (isSafe ? '🛡️ Demolish Confirm: ON' : '💥 Quick Demolish: ON')
+      
+      gameState.addToast(msg, isSafe ? 'info' : 'warning', 1500)
+    } else {
+      // 如果当前不是拆除模式，则进入拆除模式
+      gameState.setMode('demolish')
+      const msg = gameState.language === 'zh' ? '进入拆除模式' : 'Demolish Mode'
+      gameState.addToast(msg, 'info', 1000)
+    }
+    return
   }
 
-  const targetMode = keyMap[e.key.toLowerCase()]
-  if (targetMode) {
-    gameState.setMode(targetMode)
-    // 增加一个微小的 Toast 提示方便感知
-    const modeNames = { zh: { select:'选择', build:'建造', relocate:'搬迁', demolish:'拆除' }, en: { select:'Select', build:'Build', relocate:'Move', demolish:'Demolish' } }
-    const lang = gameState.language === 'zh' ? 'zh' : 'en'
-    gameState.addToast(`${modeNames[lang][targetMode]} Mode`, 'info')
+  // 4. 其他快捷键保持不变
+  if (e.key.toLowerCase() === 'i') {
+    gameState.toggleRightSidebar()
+  }
+  
+  if (e.key === 'Escape') {
+    gameState.setShowMapOverview(false)
   }
 }
 
@@ -96,7 +116,6 @@ onUnmounted(() => {
     <template #main>
       <ModeIndicator />
       <GameCanvas />
-      <!-- 方案三：悬浮模式工具栏 -->
       <ModeHUD />
       <SelectedIndicator />
     </template>
@@ -111,6 +130,7 @@ onUnmounted(() => {
 
     <template #overlays>
       <div class="pointer-events-auto">
+        <ModeHUD />
         <RestorePrompt />
       </div>
 

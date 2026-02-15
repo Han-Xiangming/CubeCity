@@ -34,10 +34,10 @@ function toggleMusic() { gameState.toggleMusic() }
 // --- 新增：切换拆除安全模式 ---
 function toggleDemolishSafety() {
   gameState.demolishConfirmEnabled = !gameState.demolishConfirmEnabled
-  const msg = language.value === 'zh' 
-    ? (gameState.demolishConfirmEnabled ? '🛡️ 拆除确认已开启 (安全模式)' : '💥 快速拆除模式已开启 (请谨慎操作)')
-    : (gameState.demolishConfirmEnabled ? '🛡️ Demolish Confirm: ON' : '💥 Quick Demolish: ON')
-  eventBus.emit('toast:add', { message: msg, type: gameState.demolishConfirmEnabled ? 'info' : 'warning' })
+  // const msg = language.value === 'zh' 
+  //   ? (gameState.demolishConfirmEnabled ? '🛡️ 拆除确认已开启 (安全模式)' : '💥 快速拆除模式已开启 (请谨慎操作)')
+  //   : (gameState.demolishConfirmEnabled ? '🛡️ Demolish Confirm: ON' : '💥 Quick Demolish: ON')
+  // eventBus.emit('toast:add', { message: msg, type: gameState.demolishConfirmEnabled ? 'info' : 'warning' })
 }
 
 function handleVolumeChange(event) {

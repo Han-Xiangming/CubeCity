@@ -28,8 +28,8 @@ export const useGameState = defineStore('gameState', {
     stability: 100,
     stabilityChangeRate: 0,
     demolishConfirmEnabled: true,
-    // --- 新增：右侧边栏折叠状态 ---
     rightSidebarCollapsed: false,
+    saveSlots: [],// 存储存档元数据：[{id, name, date, thumbnail}]
   }),
   getters: {
     dailyIncome: (state) => {
@@ -151,6 +151,46 @@ export const useGameState = defineStore('gameState', {
         this.selectedPosition = null
       }
     },
+    getSnapshot() {
+      return {
+        metadata: JSON.parse(JSON.stringify(this.metadata)),
+        credits: this.credits,
+        gameDay: this.gameDay,
+        cityName: this.cityName,
+        cityLevel: this.cityLevel,
+        citySize: this.citySize,
+        stability: this.stability,
+      };
+    },
+    saveToNewSlot(customName, defaultNameLabel) {
+      const id = Date.now();
+      const saveEntry = {
+        id,
+        name: customName || `${defaultNameLabel} ${this.saveSlots.length + 1}`,
+        date: new Date().toLocaleString(),
+        data: this.getSnapshot()
+      };
+      this.saveSlots.push(saveEntry);
+    },
+    loadFromSlot(slotId) {
+      const slot = this.saveSlots.find(s => s.id === slotId);
+      if (slot) {
+        Object.assign(this, slot.data);
+        return true;
+      }
+      return false;
+    },
+    exportSaveJSON() {
+      const blob = new Blob([JSON.stringify({ city: this.getSnapshot() })], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `CubeCity_Save_${Date.now()}.json`;
+      a.click();
+    },
+    deleteSlot(slotId) {
+      this.saveSlots = this.saveSlots.filter(s => s.id !== slotId);
+    },    
     setCredits(credits) { this.credits = credits },
     updateCredits(credits) { this.credits += credits },
     setTerritory(territory) { this.territory = territory },

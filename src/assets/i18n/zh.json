@@ -139,5 +139,23 @@
       "recoveryTitle": "材料回收",
       "recoveryText": "70%的建筑材料将退回到您的库存中"
     }
+  },
+  "saveManager": {
+    "title": "存档管理器",
+    "placeholder": "输入存档名称...",
+    "newSave": "新建存档",
+    "load": "加载",
+    "delete": "删除",
+    "empty": "未发现本地存档",
+    "export": "导出 JSON",
+    "import": "导入文件",
+    "slotDefaultName": "城市快照",
+    "toast": {
+      "saveSuccess": "存档已成功保存",
+      "loadSuccess": "正在读取存档，请稍候...",
+      "importSuccess": "城市数据导入成功",
+      "importError": "无效的存档文件",
+      "deleteSuccess": "存档已删除"
+    }
   }
 }

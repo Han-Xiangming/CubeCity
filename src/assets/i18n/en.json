@@ -145,5 +145,23 @@
       "recoveryTitle": "Material Recovery",
       "recoveryText": "70% of construction materials will be refunded to your inventory"
     }
-  }
+  },
+  "saveManager": {
+    "title": "Archive Manager",
+    "placeholder": "Enter save name...",
+    "newSave": "NEW SAVE",
+    "load": "LOAD",
+    "delete": "DEL",
+    "empty": "No local archives found",
+    "export": "Export JSON",
+    "import": "Import File",
+    "slotDefaultName": "City Snapshot",
+    "toast": {
+      "saveSuccess": "Game saved successfully",
+      "loadSuccess": "Loading archive, please wait...",
+      "importSuccess": "City imported successfully",
+      "importError": "Invalid archive file",
+      "deleteSuccess": "Archive deleted"
+    }
+}
 }

@@ -70,28 +70,27 @@ export default class Camera {
   setControls() {
     // 1. 鼠标自由旋转与平移 (OrbitControls)
     this.orbitControls = new OrbitControls(this.instance, this.canvas)
-    
+
     // --- 核心优化：开启平移 ---
     this.orbitControls.enablePan = true
     this.orbitControls.screenSpacePanning = false // 保证沿地面平移
     this.orbitControls.mouseButtons = {
       LEFT: THREE.MOUSE.ROTATE,
-      MIDDLE: THREE.MOUSE.DOLLY,
-      RIGHT: THREE.MOUSE.PAN // 右键平移
+      MIDDLE: THREE.MOUSE.PAN, // 中键用于平移
+      RIGHT: null // **修改：将右键映射为 null，禁用右键操作**
     }
 
     this.orbitControls.enableDamping = true
-    this.orbitControls.dampingFactor = 0.05 // 调低阻尼，让滑动更顺滑丝滑
-    this.orbitControls.enableZoom = false
-    this.orbitControls.enableRotate = true 
-    
+    this.orbitControls.dampingFactor = 0.05
+    this.orbitControls.enableZoom = false // 保持 OrbitControls 的缩放禁用
+    this.orbitControls.enableRotate = true
+
     // 设置初始目标
     this.orbitControls.target.copy(this.target)
 
-    // 锁定俯视角度（如果你希望地图可以上下倾斜，可以放开这两个值的差值）
+    // 锁定俯视角度
     const offset = new THREE.Vector3().subVectors(this.instance.position, this.target)
     const polarAngle = offset.angleTo(new THREE.Vector3(0, 1, 0))
-    // 允许微小的倾斜调整，增加自由感
     this.orbitControls.minPolarAngle = polarAngle - 0.1
     this.orbitControls.maxPolarAngle = polarAngle + 0.1
 
@@ -99,14 +98,13 @@ export default class Camera {
     this.trackballControls = new TrackballControls(this.instance, this.canvas)
     this.trackballControls.noRotate = true
     this.trackballControls.noPan = true // 由 OrbitControls 处理 Pan
-    this.trackballControls.noZoom = false
+    this.trackballControls.noZoom = false // 确保 TrackballControls 的缩放启用
     this.trackballControls.zoomSpeed = 1.2
     this.trackballControls.minZoom = 0.8
     this.trackballControls.maxZoom = 1.2
     this.trackballControls.target = this.orbitControls.target // 共享目标点
     this.trackballControls.handleResize()
   }
-
   setDebug() {
     if (this.debugActive) {
       const folder = this.debug.ui.addFolder({ title: 'Camera', expanded: false })

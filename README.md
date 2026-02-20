@@ -103,7 +103,7 @@ npm run build
 
 如果您觉得这个项目对您学习 Three.js 或 Vue 3 有所帮助，欢迎点击右上角的 **Star** 🌟，或者请作者喝杯咖啡：
 
-![赞赏码](README/coffe.jpg)
+![赞赏码](README/1coffe.jpg)
 
 ---
 *CubeCity - 让指尖下的方块城市充满生命力。*
